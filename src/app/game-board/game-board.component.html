@@ -1,0 +1,26 @@
+<div class="game-board">
+    <h2>Jogo de Truco</h2>
+  
+    <div class="player">
+      <h3>Jogador</h3>
+      <div class="cards">
+        <div *ngFor="let card of playerCards" class="card">
+          <img [src]="card.image" [alt]="card.name">
+          <p>{{ card.name }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="bot">
+      <h3>Robô</h3>
+      <div class="cards">
+        <div *ngFor="let card of botCards" class="card">
+          <img [src]="card.image" [alt]="card.name">
+          <p>{{ card.name }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <h2>Vencedor: {{ winner }}</h2>
+    <button (click)="startGame()">Reiniciar Jogo</button>
+  </div>

@@ -1,0 +1,22 @@
+.game-board {
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .cards {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    text-align: center;
+  }
+  
+  .card img {
+    width: 100px;
+    height: 150px;
+    border: 2px solid black;
+    border-radius: 8px;
+  }
