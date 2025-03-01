@@ -70,13 +70,22 @@ export class GameBoardComponent {
 
   playedCards: any[] = [];
 
-playCard(card: any, player: string) {
-  if (player === 'player') {
-    this.playerCards = this.playerCards.filter(c => c !== card);
-  } else {
-    this.botCards = this.botCards.filter(c => c !== card);
-  }
+playPlayerCard(card: any) {
+  // Remove a carta da mão do jogador
+  this.playerCards = this.playerCards.filter(c => c !== card);
   this.playedCards.push(card);
+
+  // Aguarda um curto período e faz o robô jogar
+  setTimeout(() => {
+    this.playBotCard();
+  }, 1000); // Tempo de espera para parecer mais natural
+}
+
+playBotCard() {
+  if (this.botCards.length > 0) {
+    const botCard = this.botCards.shift(); // Remove a primeira carta do robô
+    this.playedCards.push(botCard);
+  }
 }
 
 }

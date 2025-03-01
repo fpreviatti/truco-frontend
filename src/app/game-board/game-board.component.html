@@ -4,7 +4,7 @@
     <div class="bot">
       <h3>Robô</h3>
       <div class="cards">
-        <div *ngFor="let card of botCards" class="card" (click)="playCard(card, 'bot')">
+        <div *ngFor="let card of botCards" class="card">
           <img [src]="card.image" [alt]="card.name">
           <p>{{ card.name }}</p>
         </div>
@@ -24,7 +24,7 @@
     <div class="player">
         <h3>Jogador</h3>
         <div class="cards">
-          <div *ngFor="let card of playerCards" class="card" (click)="playCard(card, 'player')">
+          <div *ngFor="let card of playerCards" class="card" (click)="playPlayerCard(card)">
             <img [src]="card.image" [alt]="card.name">
             <p>{{ card.name }}</p>
           </div>
