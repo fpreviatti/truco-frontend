@@ -28,19 +28,19 @@ export class GameBoardComponent {
   generateDeck(): Card[] {
     const suits = ['Espadas', 'Ouros', 'Paus', 'Copas'];
     const values = [
-      { name: 'Ás', value: 1 },
-      { name: '2', value: 2 },
-      { name: '3', value: 3 },
-      { name: '4', value: 4 },
-      { name: '5', value: 5 },
-      { name: '6', value: 6 },
-      { name: '7', value: 7 },
-      { name: '8', value: 8 },
-      { name: '9', value: 9 },
-      { name: '10', value: 10 },
-      { name: 'Valete', value: 11 },
-      { name: 'Rainha', value: 12 },
-      { name: 'Rei', value: 13 }
+      { name: 'as', value: 1 },
+      { name: 'dois', value: 2 },
+      { name: 'tres', value: 3 },
+      { name: 'quatro', value: 4 },
+      { name: 'cinco', value: 5 },
+      { name: 'seis', value: 6 },
+      { name: 'sete', value: 7 },
+      { name: 'oito', value: 8 },
+      { name: 'nove', value: 9 },
+      { name: 'dez', value: 10 },
+      { name: 'valete', value: 11 },
+      { name: 'dama', value: 12 },
+      { name: 'rei', value: 13 }
     ];
 
     const deck: Card[] = [];
@@ -66,19 +66,6 @@ export class GameBoardComponent {
     this.deck = this.generateDeck(); // Reinicializa o baralho
     this.playerCards = [this.drawCard(), this.drawCard(), this.drawCard()];
     this.botCards = [this.drawCard(), this.drawCard(), this.drawCard()];
-    this.checkWinner();
   }
 
-  checkWinner(): void {
-    const playerValue = this.playerCards.reduce((sum, card) => sum + card.value, 0);
-    const botValue = this.botCards.reduce((sum, card) => sum + card.value, 0);
-
-    if (playerValue > botValue) {
-      this.winner = 'Jogador';
-    } else if (playerValue < botValue) {
-      this.winner = 'Robô';
-    } else {
-      this.winner = 'Empate';
-    }
-  }
 }
