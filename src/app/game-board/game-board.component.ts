@@ -68,4 +68,15 @@ export class GameBoardComponent {
     this.botCards = [this.drawCard(), this.drawCard(), this.drawCard()];
   }
 
+  playedCards: any[] = [];
+
+playCard(card: any, player: string) {
+  if (player === 'player') {
+    this.playerCards = this.playerCards.filter(c => c !== card);
+  } else {
+    this.botCards = this.botCards.filter(c => c !== card);
+  }
+  this.playedCards.push(card);
+}
+
 }

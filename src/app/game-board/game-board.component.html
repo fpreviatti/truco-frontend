@@ -1,25 +1,35 @@
 <div class="game-board">
     <h2>Jogo de Truco</h2>
   
-    <div class="player">
-      <h3>Jogador</h3>
+    <div class="bot">
+      <h3>Robô</h3>
       <div class="cards">
-        <div *ngFor="let card of playerCards" class="card">
+        <div *ngFor="let card of botCards" class="card" (click)="playCard(card, 'bot')">
           <img [src]="card.image" [alt]="card.name">
           <p>{{ card.name }}</p>
         </div>
       </div>
     </div>
   
-    <div class="bot">
-      <h3>Robô</h3>
-      <div class="cards">
-        <div *ngFor="let card of botCards" class="card">
+    <div class="play-area">
+      <h3>Mesa</h3>
+      <div class="center-cards">
+        <div *ngFor="let card of playedCards" class="card">
           <img [src]="card.image" [alt]="card.name">
           <p>{{ card.name }}</p>
         </div>
       </div>
     </div>
+  
+    <div class="player">
+        <h3>Jogador</h3>
+        <div class="cards">
+          <div *ngFor="let card of playerCards" class="card" (click)="playCard(card, 'player')">
+            <img [src]="card.image" [alt]="card.name">
+            <p>{{ card.name }}</p>
+          </div>
+        </div>
+      </div>
   
     <button (click)="startGame()">Reiniciar Jogo</button>
   </div>
