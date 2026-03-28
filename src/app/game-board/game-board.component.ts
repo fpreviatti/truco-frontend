@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WinnerService } from '../service/winner.service';
 
 interface Card {
   name: string;
@@ -19,9 +20,12 @@ export class GameBoardComponent {
   playerCards: Card[] = [];
   botCards: Card[] = [];
   deck: Card[] = this.generateDeck();
+  vira: Card | null = null;
   winner: string | null = null;
 
-  constructor() {
+  round: number = 0;
+
+  constructor(private winnerService: WinnerService) {
     this.startGame();
   }
 
@@ -47,7 +51,7 @@ export class GameBoardComponent {
     for (const suit of suits) {
       for (const card of values) {
         deck.push({
-          name: `${card.name} de ${suit}`, // Inclui o nome e o naipe juntos
+          name: `${card.name} de ${suit}`,
           suit,
           value: card.value,
           image: `assets/${card.name.toLowerCase()}-${suit.toLowerCase()}.png`
@@ -59,33 +63,49 @@ export class GameBoardComponent {
 
   drawCard(): Card {
     const randomIndex = Math.floor(Math.random() * this.deck.length);
-    return this.deck.splice(randomIndex, 1)[0]; // Remove e retorna a carta
+    return this.deck.splice(randomIndex, 1)[0];
+  }
+
+  nextRound(): void {
+    this.round = 0; // Reinicia o contador de rodadas
   }
 
   startGame(): void {
     this.deck = this.generateDeck(); // Reinicializa o baralho
+    this.playedCards = [];           // Limpa as cartas na mesa
     this.playerCards = [this.drawCard(), this.drawCard(), this.drawCard()];
     this.botCards = [this.drawCard(), this.drawCard(), this.drawCard()];
+    this.vira = this.drawCard();
+    console.log('Vira:', this.vira);
   }
 
   playedCards: any[] = [];
 
-playPlayerCard(card: any) {
-  // Remove a carta da mão do jogador
+playPlayerCard(card: Card) {
   this.playerCards = this.playerCards.filter(c => c !== card);
   this.playedCards.push(card);
 
-  // Aguarda um curto período e faz o robô jogar
   setTimeout(() => {
-    this.playBotCard();
-  }, 1000); // Tempo de espera para parecer mais natural
+    const botCard = this.playBotCard();
+    this.verifyRoundWinner(card, botCard);
+  }, 1000);
 }
 
-playBotCard() {
+playBotCard(): Card {
+  const botCard = this.botCards[0];
   if (this.botCards.length > 0) {
     const botCard = this.botCards.shift(); // Remove a primeira carta do robô
-    this.playedCards.push(botCard);
+    this.playedCards.push(botCard); 
   }
+  return botCard;
+}
+
+validateRound(){
+  this.round=0;
+}
+
+verifyRoundWinner(playerCard: Card, botCard?: Card) {
+  this.winnerService.verifyRoundWinner(playerCard, botCard);
 }
 
 }
