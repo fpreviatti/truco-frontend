@@ -32,4 +32,64 @@
     gap: 10px;
   }
 
+  /* animação de limpeza em cascata (stagger) */
+.center-cards .card {
+  transition: transform 220ms ease, opacity 220ms ease;
+  /* --i é definido dinamicamente por style no template; se não existir, delay zero */
+}
+
+.center-cards.clearing .card {
+  animation: clearCard 4000ms forwards;
+  /* se o elemento não definir --i, o calc resolve como 0 */
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+@keyframes clearCard {
+  to {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.95);
+  }
+}
+
+/* mensagem temporária — usaremos a área existente, mas mostrar via CSS
+   Para exibir texto sem editar o HTML vamos usar um pseudo-elemento no header "Mesa" */
+.play-area h3::after {
+  content: attr(data-round-message);
+  display: block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+/* quando houver mensagem (classe aplicada dinamicamente em play-area), mostra o pseudo */
+/* .play-area.has-round-message h3::after {
+  opacity: 1;
+  transform: translateY(0);
+} */
+
+/* banner do vencedor — também exibido via pseudo do container .game-board (abaixo da mesa) */
+.game-board::before {
+  content: attr(data-winner-banner);
+  display: none;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+  position: relative;
+  left: 0;
+}
+
+/* quando existir banner, tornamos visível */
+.game-board.has-winner::before {
+  display: inline-block;
+}
+
   

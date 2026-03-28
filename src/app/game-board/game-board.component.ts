@@ -23,7 +23,14 @@ export class GameBoardComponent {
   vira: Card | null = null;
   winner: string | null = null;
 
+
+
   round: number = 0;
+
+  roundMessage: string | null = null;
+  clearing = false;
+  winnerDisplay: string | null = null;
+  CLEAR_ANIMATION_MS = 900;
 
   constructor(private winnerService: WinnerService) {
     this.startGame();
@@ -87,7 +94,8 @@ playPlayerCard(card: Card) {
 
   setTimeout(() => {
     const botCard = this.playBotCard();
-    this.verifyRoundWinner(card, botCard);
+    const result =this.verifyRoundWinner(card, botCard);
+    this.handleRoundResult(result);
   }, 1000);
 }
 
@@ -105,7 +113,62 @@ validateRound(){
 }
 
 verifyRoundWinner(playerCard: Card, botCard?: Card) {
-  this.winnerService.verifyRoundWinner(playerCard, botCard);
+  return this.winnerService.verifyRoundWinner(playerCard, botCard);
+}
+
+handleRoundResult(result: 'player' | 'bot' | 'tie' | null) {
+  if (!result) return;
+
+  this.winner = result;
+  this.winnerDisplay =
+    result === 'player' ? 'Você venceu a rodada!' :
+    result === 'bot' ? 'Robô venceu a rodada' :
+    'Rodada empatada';
+
+  this.roundMessage = `${this.winnerDisplay} — limpando a mesa...`;
+
+  // seta atributos para pseudo-elements e adiciona classes que o CSS usa
+  const playAreaEl = document.querySelector('.play-area') as HTMLElement | null;
+  const gameBoardEl = document.querySelector('.game-board') as HTMLElement | null;
+  const centerEl = document.querySelector('.center-cards') as HTMLElement | null;
+
+  if (playAreaEl) {
+    playAreaEl.setAttribute('data-round-message', this.roundMessage);
+    playAreaEl.classList.add('has-round-message');
+  }
+  if (gameBoardEl) {
+    gameBoardEl.setAttribute('data-winner-banner', this.winnerDisplay || '');
+    gameBoardEl.classList.add('has-winner');
+  }
+
+  // ativa a classe que dispara a animação CSS
+  if (centerEl) centerEl.classList.add('clearing');
+  this.clearing = true;
+
+  // aguarda a animação terminar e então limpa as cartas e as flags visuais
+  setTimeout(() => {
+    this.playedCards = [];
+    this.clearing = false;
+
+    // remove classe de animação
+    if (centerEl) centerEl.classList.remove('clearing');
+
+    // remove mensagem temporária (pseudo) e banner após pequenos delays
+    if (playAreaEl) {
+      playAreaEl.classList.remove('has-round-message');
+      playAreaEl.removeAttribute('data-round-message');
+    }
+    setTimeout(() => {
+      if (gameBoardEl) {
+        gameBoardEl.classList.remove('has-winner');
+        gameBoardEl.removeAttribute('data-winner-banner');
+      }
+      this.winnerDisplay = null;
+    }, 2000);
+
+    this.roundMessage = null;
+    this.nextRound();
+  }, this.CLEAR_ANIMATION_MS);
 }
 
 }

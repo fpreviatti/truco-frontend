@@ -1,11 +1,11 @@
 <div class="game-board">
-    <h2>Jogo de Truco</h2>
+    <h2>Truco!</h2>
   
     <div class="bot">
       <h3>Robô</h3>
       <div class="cards">
         <div *ngFor="let card of botCards" class="card">
-          <img [src]="card.image" [alt]="card.name">
+          <img [src]="'assets/carta-escondida.png'" [alt]="card.name">
         </div>
       </div>
     </div>
@@ -27,5 +27,7 @@
         </div>
       </div>
   
-    <button (click)="startGame()">Reiniciar Jogo</button>
+    <button [disabled]="winner" (click)="startGame()">Continuar</button>
+    <button (click)="startGame()">Novo Jogo</button>
+    
   </div>
